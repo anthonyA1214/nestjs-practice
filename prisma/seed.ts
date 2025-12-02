@@ -1,7 +1,7 @@
 import { PrismaClient } from 'src/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import * as bcrypt from 'bcrypt';
-import { users } from 'data/users';
+import { users } from '../src/lib/data/users';
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL,
