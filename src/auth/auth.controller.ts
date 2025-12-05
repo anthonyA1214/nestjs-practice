@@ -14,10 +14,4 @@ export class AuthController {
   login(@Request() req: AuthRequest) {
     return req.user;
   }
-
-  // @UseGuards(LocalAuthGuard)
-  // @Post('logut')
-  // logout(@Request() req: AuthRequest) {
-  //   return req.logout();
-  // }
 }

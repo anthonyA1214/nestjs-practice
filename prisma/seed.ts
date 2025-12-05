@@ -1,6 +1,6 @@
 import { PrismaClient } from 'src/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { users } from '../src/lib/data/users';
 
 const adapter = new PrismaPg({
@@ -13,12 +13,12 @@ const prisma = new PrismaClient({
 
 async function main() {
   for (const user of users) {
-    const hashedPassword = await bcrypt.hash(user.password, 10);
+    const hash = await bcrypt.hash(user.password, 10);
 
     await prisma.user.create({
       data: {
         username: user.username,
-        password: hashedPassword,
+        password: hash,
       },
     });
   }

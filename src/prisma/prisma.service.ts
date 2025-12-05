@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from 'src/generated/prisma/client';
+import { PrismaClient } from '../generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { parse } from 'pg-connection-string';
 
@@ -21,6 +21,7 @@ export class PrismaService extends PrismaClient {
       user,
       password,
       database,
+      ssl: { rejectUnauthorized: false },
     });
 
     super({ adapter });
