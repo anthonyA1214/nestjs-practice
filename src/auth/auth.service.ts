@@ -1,16 +1,21 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
+import { User } from 'src/generated/prisma/client';
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findOne(username);
 
     if (!user) {
-      throw new UnauthorizedException('hotdog');
+      throw new UnauthorizedException();
     }
 
     const isPasswordMatch = await bcrypt.compare(pass, user.password);
@@ -20,5 +25,12 @@ export class AuthService {
 
     const { password: _password, ...result } = user;
     return result;
+  }
+
+  login(user: User) {
+    const payload = { sub: user.id, username: user.username };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 }

@@ -2,9 +2,24 @@ import { PrismaClient } from 'src/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import bcrypt from 'bcrypt';
 import { users } from '../src/lib/data/users';
+import { parse } from 'pg-connection-string';
+
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error('DATABASE_URL environment variable is not set');
+}
+
+const config = parse(databaseUrl);
+const { host, port, user, password, database } = config;
 
 const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
+  host,
+  port,
+  user,
+  password,
+  database,
+  ssl: true,
 });
 
 const prisma = new PrismaClient({

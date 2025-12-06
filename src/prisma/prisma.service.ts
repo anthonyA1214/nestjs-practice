@@ -21,7 +21,7 @@ export class PrismaService extends PrismaClient {
       user,
       password,
       database,
-      ssl: { rejectUnauthorized: false },
+      ssl: true,
     });
 
     super({ adapter });
